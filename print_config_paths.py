@@ -19,21 +19,34 @@ def main():
         print(f"Warning: Virtual environment directory not found at {venv_path}", file=sys.stderr)
         print("Please ensure you have created the virtual environment using 'uv venv' before running the server.", file=sys.stderr)
 
-    print("Configuration for MCP host (e.g., Claude Desktop):")
-    print("Use the following absolute path for the 'command' field.")
-    print("The 'args' field should typically be empty when using this wrapper script.")
-    print("\nWrapper Script Path ('command'):")
-    print(f'"{wrapper_script_path}"')
+    # --- Start Refactored Output ---
+    print("\n--- MCP Host Configuration ---")
+    print("To connect this tool to your MCP host (e.g., Claude Desktop),")
+    print("you need to configure the 'youtube' tool entry.")
 
-    print("\nExample JSON snippet:")
+    print("\n1. Set the 'command' field to this wrapper script path:")
+    print(f'   "{wrapper_script_path}"')
+    print("   (The 'args' field should usually be an empty list: [])")
+
+
+    print("\n2. Example full MCP JSON configuration (copy/update your mcp.json):")
     print(f'''
-    "youtube": {{
+{{
+  "mcpServers": {{
+      "youtube": {{
         "command": "{wrapper_script_path}",
-        "args": [] // Usually empty when using the wrapper
-    }}
+        "args": [] 
+      }},
+      // Add other MCP server configurations here (like blender, etc.)
+  }}
+}}
     ''')
-    print("\nNote: Ensure the wrapper script ('run_server.sh') has execute permissions (chmod +x run_server.sh).")
-    print("Also ensure you have run 'uv venv' and 'uv sync' to set up the environment.")
+
+    print("\n--- Notes ---")
+    print(" - If you need this configuration info again, re-run this script:")
+    print(f"     ./.venv/bin/python {os.path.basename(__file__)}")
+    print(" - Windows Users: The run_server.sh script is for Linux/macOS. See README for alternatives.")
+    # --- End Refactored Output ---
 
 if __name__ == "__main__":
     main() 

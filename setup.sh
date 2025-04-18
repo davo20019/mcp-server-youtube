@@ -6,6 +6,7 @@
 set -e # Exit immediately if a command exits with a non-zero status.
 
 # PROJECT_DIR="mcp-server-youtube" # No longer needed as we run from within
+VENV_PYTHON=".venv/bin/python"
 
 echo "Starting MCP YouTube Server setup (running from $(pwd))..."
 
@@ -32,6 +33,12 @@ echo "'uv' command found."
 echo "Creating Python virtual environment using 'uv venv'..."
 uv venv
 
+# Ensure the venv python exists before proceeding
+if [ ! -f "$VENV_PYTHON" ]; then
+    echo "Error: Virtual environment Python executable not found at $VENV_PYTHON after 'uv venv'."
+    exit 1
+fi
+
 # 4. Install dependencies
 echo "Installing dependencies using 'uv sync' (this might take a moment)..."
 uv sync
@@ -50,7 +57,6 @@ echo "YOUTUBE_API_KEY=$YOUTUBE_API_KEY" > .env
 
 # 6. Make wrapper script executable
 if [ -f "run_server.sh" ]; then
-    echo "Making run_server.sh executable..."
     chmod +x run_server.sh
 else
     echo "Warning: run_server.sh not found. Skipping chmod."
@@ -58,23 +64,7 @@ fi
 
 # 7. Print final instructions and configuration path
 
-echo "---------------------------------------------------"
-echo "Setup mostly complete!"
+"$VENV_PYTHON" print_config_paths.py # Run the helper script using the venv Python
 echo ""
-echo "The final step is to configure your MCP host (e.g., Claude Desktop)."
-echo "Run the following command inside the '$PROJECT_DIR' directory (with the venv active or using the venv python):"
-echo "  python print_config_paths.py"
-echo ""
-echo "Then, copy the 'Wrapper Script Path ('command')' output and paste it into your"
-echo "MCP host's configuration file (e.g., claude_desktop_config.json)."
-echo "The 'args' field in the config should be an empty list: []."
-echo ""
-echo "Example host config snippet:"
-python print_config_paths.py # Run the helper script to show the path
-echo ""
-echo "Note for Windows Users: The run_server.sh wrapper is for Linux/macOS."
-echo "You may need to adapt it or use the alternative configuration method mentioned in the README."
-echo "---------------------------------------------------"
 
-cd .. # Go back to the root directory # No longer needed
 echo "Setup script finished." 
