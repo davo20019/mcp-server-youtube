@@ -57,20 +57,7 @@ After running the `setup.sh` script and configuring your MCP host as described a
     *   macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
     *   Windows: `%APPDATA%\Claude\claude_desktop_config.json`
 
-2.  **Edit the config file:** Ensure the entry under `mcpServers` uses the path printed by `setup.sh` (via `print_config_paths.py`):
-
-    ```json
-    {
-        "mcpServers": {
-            // ... other servers might be here ...
-
-            "youtube": {
-                "command": "/ABSOLUTE/PATH/PRINTED/BY/SCRIPT/mcp-server-youtube/run_server.sh",
-                "args": []
-            }
-        }
-    }
-    ```
+2.  **Edit the config file:** Update the `mcpServers` section. The `setup.sh` script (via `print_config_paths.py`) provides an example JSON structure showing exactly how to configure the `youtube` server entry, including the correct absolute path for the `command` field. Copy and paste or adapt the example from the script's output into your configuration file.
 
 3.  **Restart Claude for Desktop.**
 
