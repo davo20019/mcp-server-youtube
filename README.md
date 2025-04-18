@@ -15,7 +15,7 @@ This is a simple Model Context Protocol (MCP) server that provides tools to inte
 
 1.  **Clone the repository** (or download the source code):
     ```bash
-    git clone https://github.com/davo20019/mcp-server-youtube.git
+    git clone https://github.com/davo00019/mcp-server-youtube.git
     cd mcp-server-youtube
     ```
 
@@ -32,9 +32,10 @@ This is a simple Model Context Protocol (MCP) server that provides tools to inte
 
 3.  **Install dependencies** (using `uv`):
     ```bash
-    uv pip install -r requirements.txt
+    # This command uses the uv.lock file for reproducible installs
+    uv sync
     ```
-    Alternatively, using `pip`:
+    Alternatively, using `pip` (if you chose standard `venv` above):
     ```bash
     pip install -r requirements.txt
     ```
@@ -56,13 +57,22 @@ This is a simple Model Context Protocol (MCP) server that provides tools to inte
 
 ## Running with an MCP Host (Example: Claude for Desktop)
 
-To use this server with an MCP host application like Claude for Desktop, you need to configure the host to launch the server.
+To use this server with an MCP host application like Claude for Desktop, you need to configure the host to launch the server using the provided wrapper script.
 
-1.  **Find your Claude for Desktop config file:**
+1.  **Run the configuration helper script:**
+    *   Make sure your virtual environment is activated (`source .venv/bin/activate`).
+    *   Run the helper script from the `mcp-server-youtube` directory:
+        ```bash
+        python print_config_paths.py
+        ```
+    *   This script will print the required absolute path for the `run_server.sh` wrapper script and an example JSON snippet.
+
+2.  **Find your Claude for Desktop config file:**
     *   macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
     *   Windows: `%APPDATA%\Claude\claude_desktop_config.json` (You might need to create the `Claude` folder and the file).
+    *   **Note for Windows Users:** The `run_server.sh` script is for Linux/macOS. You might need to adapt it or create a similar `run_server.bat` script, or alternatively, stick to the older method of specifying the python executable and script path directly if the wrapper script doesn't work on your setup.
 
-2.  **Edit the config file:** Add the following entry under the `mcpServers` key. **Make sure to replace the placeholder paths with the correct *absolute paths* on your system.**
+3.  **Edit the config file:** Add or update the entry under the `mcpServers` key using the path printed by the helper script. It should look similar to this:
 
     ```json
     {
@@ -70,18 +80,16 @@ To use this server with an MCP host application like Claude for Desktop, you nee
             // ... other servers might be here ...
 
             "youtube": {
-                "command": "/ABSOLUTE/PATH/TO/mcp-server-youtube/.venv/bin/python",
-                "args": [
-                    "/ABSOLUTE/PATH/TO/mcp-server-youtube/youtube_server.py"
-                ]
+                "command": "/ABSOLUTE/PATH/PRINTED/BY/SCRIPT/mcp-server-youtube/run_server.sh",
+                "args": [] // Args should be empty when using the wrapper
             }
         }
     }
     ```
-    *   **`command`:** The absolute path to the `python` executable *inside* the `.venv` directory you created during installation.
-    *   **`args`:** The absolute path to the `youtube_server.py` script within the project directory.
+    *   **`command`:** Paste the absolute path to `run_server.sh` that was printed by `print_config_paths.py`.
+    *   **`args`:** Leave this as an empty array `[]`.
 
-3.  **Restart Claude for Desktop.**
+4.  **Restart Claude for Desktop.**
 
 ## Usage
 
