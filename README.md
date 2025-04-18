@@ -15,7 +15,6 @@ This is a simple Model Context Protocol (MCP) server that provides tools to inte
 
 1.  **Clone the repository** (or download the source code):
     ```bash
-    # Replace <your-github-username> with your actual GitHub username
     git clone https://github.com/davo20019/mcp-server-youtube.git
     cd mcp-server-youtube
     ```
