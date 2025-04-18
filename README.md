@@ -74,6 +74,19 @@ You can then use natural language prompts within the host application:
 
 The host application will communicate with the local `youtube_server.py` process to fulfill these requests.
 
+## Available Tools
+
+The server currently provides the following tools:
+
+*   `search_videos(query: str, max_results: int = 5)`: Searches YouTube for videos based on a query string.
+*   `get_video_details(video_id: str)`: Fetches detailed information (snippet, statistics, content details) for a specific video ID.
+*   `get_channel_details(channel_id: str)`: Fetches detailed information (snippet, statistics) for a specific channel ID.
+*   `list_channel_videos(channel_id: str, max_results: int = 10)`: Lists recent videos uploaded by a specific channel ID.
+*   `search_playlists(query: str, max_results: int = 5)`: Searches YouTube for playlists matching a query string.
+*   `get_playlist_items(playlist_id: str, max_results: int = 10)`: Lists the videos contained within a specific playlist ID.
+*   `get_related_videos(video_id: str, max_results: int = 5)`: Finds videos that YouTube deems related to a given video ID.
+*   `get_popular_videos(region_code: str = 'US', video_category_id: str = '0', max_results: int = 10)`: Lists the most popular videos currently trending in a specific region or category.
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit issues or pull requests if you have improvements or bug fixes.
