@@ -8,71 +8,56 @@ This is a simple Model Context Protocol (MCP) server that provides tools to inte
 ## Requirements
 
 *   Python 3.10 or higher.
-*   [uv](https://github.com/astral-sh/uv) (recommended for environment management) or `pip`.
+*   [uv](https://github.com/astral-sh/uv) (must be installed before running setup).
 *   A YouTube Data API v3 Key. You can obtain one from the [Google Cloud Console](https://console.cloud.google.com/apis/credentials).
+*   `bash` compatible shell (for running the setup script, primarily Linux/macOS).
 
-## Installation
+## Installation & Setup
 
-1.  **Clone the repository** (or download the source code):
+1.  **Clone the repository:**
     ```bash
     git clone https://github.com/davo00019/mcp-server-youtube.git
     cd mcp-server-youtube
     ```
 
-2.  **Create and activate a virtual environment** (using `uv`):
-    ```bash
-    uv venv
-    source .venv/bin/activate  # On Windows use `.venv\Scripts\activate`
-    ```
-    Alternatively, using standard `venv`:
-    ```bash
-    python -m venv .venv
-    source .venv/bin/activate # On Windows use `.venv\Scripts\activate`
-    ```
-
-3.  **Install dependencies** (using `uv`):
-    ```bash
-    # This command uses the uv.lock file for reproducible installs
-    uv sync
-    ```
-    Alternatively, using `pip` (if you chose standard `venv` above):
-    ```bash
-    pip install -r requirements.txt
-    ```
-
-## Configuration
-
-1.  **API Key:** This server requires a YouTube Data API v3 key.
-    *   Go to the [Google Cloud Console](https://console.cloud.google.com/apis/credentials).
-    *   Create a project if you don't have one.
-    *   Enable the "YouTube Data API v3".
-    *   Create an API key credential.
-
-2.  **`.env` File:** Create a file named `.env` in the root of the `mcp-server-youtube` project directory.
-    *   Add your API key to this file like so:
+2.  **Run the setup script:**
+    *   Ensure you have `uv` installed (`pip install uv` or see [uv installation](https://github.com/astral-sh/uv)).
+    *   From **within** the `mcp-server-youtube` directory, run:
+        ```bash
+        bash setup.sh
         ```
-        YOUTUBE_API_KEY=YOUR_ACTUAL_API_KEY_HERE
-        ```
-    *   Replace `YOUR_ACTUAL_API_KEY_HERE` with the key you obtained from Google Cloud.
+    *   The script will:
+        *   Check for `uv`.
+        *   Create a virtual environment (`.venv`) inside `mcp-server-youtube`.
+        *   Install dependencies (`uv sync`).
+        *   Prompt you for your YouTube API Key and create the `.env` file.
+        *   Make the server wrapper script executable.
+        *   Print the final instructions and the path needed for your MCP host configuration.
+
+3.  **Configure MCP Host:**
+    *   Follow the instructions printed at the end of the `setup.sh` script.
+    *   Copy the 'Wrapper Script Path' provided by the script.
+    *   Paste this path into your MCP host's configuration file (e.g., `claude_desktop_config.json`) as the `command` for the `youtube` server, ensuring the `args` are `[]`.
+
+## Configuration Details (`.env`)
+
+The `setup.sh` script will prompt you for your YouTube Data API v3 key and create a `.env` file in the `mcp-server-youtube` directory with the following content:
+
+```
+YOUTUBE_API_KEY=YOUR_API_KEY_HERE
+```
+
+If you need to change the key later, you can edit this `.env` file directly.
 
 ## Running with an MCP Host (Example: Claude for Desktop)
 
-To use this server with an MCP host application like Claude for Desktop, you need to configure the host to launch the server using the provided wrapper script.
+After running the `setup.sh` script and configuring your MCP host as described above (Step 3 in Installation & Setup), the server should launch automatically when your host application starts.
 
-1.  **Run the configuration helper script:**
-    *   Make sure your virtual environment is activated (`source .venv/bin/activate`).
-    *   Run the helper script from the `mcp-server-youtube` directory:
-        ```bash
-        python print_config_paths.py
-        ```
-    *   This script will print the required absolute path for the `run_server.sh` wrapper script and an example JSON snippet.
-
-2.  **Find your Claude for Desktop config file:**
+1.  **Find your Claude for Desktop config file:**
     *   macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
-    *   Windows: `%APPDATA%\Claude\claude_desktop_config.json` (You might need to create the `Claude` folder and the file).
-    *   **Note for Windows Users:** The `run_server.sh` script is for Linux/macOS. You might need to adapt it or create a similar `run_server.bat` script, or alternatively, stick to the older method of specifying the python executable and script path directly if the wrapper script doesn't work on your setup.
+    *   Windows: `%APPDATA%\Claude\claude_desktop_config.json`
 
-3.  **Edit the config file:** Add or update the entry under the `mcpServers` key using the path printed by the helper script. It should look similar to this:
+2.  **Edit the config file:** Ensure the entry under `mcpServers` uses the path printed by `setup.sh` (via `print_config_paths.py`):
 
     ```json
     {
@@ -81,15 +66,15 @@ To use this server with an MCP host application like Claude for Desktop, you nee
 
             "youtube": {
                 "command": "/ABSOLUTE/PATH/PRINTED/BY/SCRIPT/mcp-server-youtube/run_server.sh",
-                "args": [] // Args should be empty when using the wrapper
+                "args": []
             }
         }
     }
     ```
-    *   **`command`:** Paste the absolute path to `run_server.sh` that was printed by `print_config_paths.py`.
-    *   **`args`:** Leave this as an empty array `[]`.
 
-4.  **Restart Claude for Desktop.**
+3.  **Restart Claude for Desktop.**
+
+    *   **Windows Users Note:** The `setup.sh` and `run_server.sh` scripts are designed for `bash` environments (Linux/macOS). You might need to perform the setup steps manually (create venv, install deps, create `.env`, configure host with direct python/script paths) or adapt the scripts for Windows (e.g., create a `run_server.bat`).
 
 ## Usage
 
