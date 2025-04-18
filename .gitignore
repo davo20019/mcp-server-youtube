@@ -1,6 +1,7 @@
 # Python-generated files
 __pycache__/
 *.py[oc]
+*.pyd
 build/
 dist/
 wheels/
@@ -14,8 +15,9 @@ wheels/
 .vscode/
 .idea/
 
-# Python cache files
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
