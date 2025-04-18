@@ -15,11 +15,10 @@ This is a simple Model Context Protocol (MCP) server that provides tools to inte
 
 1.  **Clone the repository** (or download the source code):
     ```bash
-    # If you upload this to GitHub, replace with your repo URL
-    # git clone https://github.com/your-username/mcp-server-youtube.git
-    # cd mcp-server-youtube
+    # Replace <your-github-username> with your actual GitHub username
+    git clone https://github.com/davo20019/mcp-server-youtube.git
+    cd mcp-server-youtube
     ```
-    (Assuming you are already in the `mcp-server-youtube` directory if you downloaded it).
 
 2.  **Create and activate a virtual environment** (using `uv`):
     ```bash
@@ -102,4 +101,4 @@ Contributions are welcome! Please feel free to submit issues or pull requests if
 
 ## License
 
-(Optional: Add a license here, e.g., MIT License)
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
